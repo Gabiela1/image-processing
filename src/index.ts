@@ -5,6 +5,7 @@ import { MathImg } from "./MathImg.js";
 import { Particle } from "./particle.js";
 import { ParticleText } from "./particle.js";
 import { CanvasLocal } from './canvasLocal.js';
+import { DynamicLines } from "./proyectofinal.js";
 
 let lienzo1: HTMLCanvasElement;
 let lienzo2: HTMLCanvasElement;
@@ -423,6 +424,32 @@ function tAfin(evt: any): void{
   imagenSal.imageArray2DtoData(pantalla2, MathImg.tAfin(imagenSal, factores));
 }
 
+
+//seccion para proyecto 
+
+let dynamicLines: DynamicLines;
+
+function initDynamicLines() {
+  dynamicLines = new DynamicLines(ctx, 'blue', 2, 100, 1);
+}
+
+function animateDynamicLines() {
+  ctx.clearRect(0, 0, pantalla2.canvas.width, pantalla2.canvas.height);
+  ctx.drawImage(imgLocal.getImage(), 0, 0, pantalla2.canvas.width, pantalla2.canvas.height);
+
+  dynamicLines.generatePoints();
+  dynamicLines.animateLines();
+  dynamicLines.drawLines();
+
+  requestAnimationFrame(animateDynamicLines);
+}
+
+function startDynamicLines() {
+  initDynamicLines();
+  animateDynamicLines();
+}
+
+
 lienzo1.addEventListener('mousemove', handleMouse);
  
 lienzo1.addEventListener("mousemove", imgLocal.drawSmallImg);
@@ -499,3 +526,8 @@ document.getElementById("op-rotacion").addEventListener('click', rotarImagen2, f
 document.getElementById("op-shearingX").addEventListener('click', shearingX, false);
 document.getElementById("op-shearingY").addEventListener('click', shearingY, false);
 document.getElementById("op-afin").addEventListener('click', tAfin, false);
+
+
+//operaciones proyecto 
+
+document.getElementById("startDominoEffect").addEventListener('click', startDynamicLines , false);
