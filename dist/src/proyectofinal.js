@@ -141,3 +141,30 @@ var ProgressBar = /** @class */ (function () {
     return ProgressBar;
 }());
 export { ProgressBar };
+var DynamicBarChart = /** @class */ (function () {
+    function DynamicBarChart(x, y, width, height, ctx) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.ctx = ctx;
+        this.barColors = ['#ff5733', '#33ff57', '#5733ff']; // Colores de las barras
+        this.barHeights = [50, 80, 120]; // Alturas iniciales de las barras
+    }
+    DynamicBarChart.prototype.updateBarHeights = function () {
+        // Actualiza las alturas de las barras de manera dinámica (puedes personalizar la lógica según tus necesidades)
+        for (var i = 0; i < this.barHeights.length; i++) {
+            this.barHeights[i] = Math.random() * this.height;
+        }
+    };
+    DynamicBarChart.prototype.draw = function () {
+        // Dibuja las barras
+        var barWidth = this.width / this.barColors.length;
+        for (var i = 0; i < this.barColors.length; i++) {
+            this.ctx.fillStyle = this.barColors[i];
+            this.ctx.fillRect(this.x + i * barWidth, this.y + this.height - this.barHeights[i], barWidth, this.barHeights[i]);
+        }
+    };
+    return DynamicBarChart;
+}());
+export { DynamicBarChart };

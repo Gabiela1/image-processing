@@ -5,7 +5,7 @@ import { MathImg } from "./MathImg.js";
 import { Particle } from "./particle.js";
 import { ParticleText } from "./particle.js";
 import { CanvasLocal } from './canvasLocal.js';
-import { DynamicLines, ColorExplosions, ProgressBar } from "./proyectofinal.js";
+import { DynamicLines, ColorExplosions, ProgressBar, DynamicBarChart} from "./proyectofinal.js";
 
 let lienzo1: HTMLCanvasElement;
 let lienzo2: HTMLCanvasElement;
@@ -487,6 +487,9 @@ function initProgressBar() {
 }
 
 function animateProgressBar() {
+  // Dibuja la imagen original en el fondo
+  ctx.drawImage(imgLocal.getImage(), 0, 0, pantalla2.canvas.width, pantalla2.canvas.height);
+
   // Incrementa el progreso gradualmente
   progressBar.update(progressBar.progress + 0.01);
 
@@ -502,6 +505,40 @@ function animateProgressBar() {
 function progreso() {
   initProgressBar();
   animateProgressBar();
+}
+
+//seccion de grafico de barras 
+
+let dynamicBarChart: DynamicBarChart;
+
+function initDynamicBarChart() {
+  const chartX = 50;
+  const chartY = 50;
+  const chartWidth = 300;
+  const chartHeight = 150;
+
+  dynamicBarChart = new DynamicBarChart(chartX, chartY, chartWidth, chartHeight, ctx);
+}
+
+function animateDynamicBarChart() {
+
+  pantalla2.clearRect(0, 0, pantalla2.canvas.width, pantalla2.canvas.height);
+
+  pantalla2.drawImage(imgLocal.getImage(), 0, 0, pantalla2.canvas.width, pantalla2.canvas.height);
+
+  
+  dynamicBarChart.draw();
+
+  // Actualiza las alturas de las barras
+  dynamicBarChart.updateBarHeights();
+
+ 
+  requestAnimationFrame(animateDynamicBarChart);
+}
+
+function startDynamicBarChartAnimation() {
+  initDynamicBarChart();
+  animateDynamicBarChart();
 }
 lienzo1.addEventListener('mousemove', handleMouse);
  
@@ -586,3 +623,4 @@ document.getElementById("op-afin").addEventListener('click', tAfin, false);
 document.getElementById("startDinamicEffect").addEventListener('click', startDynamicLines , false);
 document.getElementById("startColorExplosion").addEventListener('click', startColorExplosions , false);
 document.getElementById("progreso").addEventListener('click', progreso , false);
+document.getElementById("startDynamicBarChartAnimation").addEventListener('click', startDynamicBarChartAnimation, false);

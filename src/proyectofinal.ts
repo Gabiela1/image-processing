@@ -172,3 +172,41 @@ export class ProgressBar {
     this.ctx.fillText('Loading...', this.x + this.width / 2 - 40, this.y + this.height / 2 + 6);
   }
 }
+
+
+export class DynamicBarChart {
+  protected x: number;
+  protected y: number;
+  protected width: number;
+  protected height: number;
+  protected ctx: CanvasRenderingContext2D;
+  protected barColors: string[];
+  protected barHeights: number[];
+
+  constructor(x: number, y: number, width: number, height: number, ctx: CanvasRenderingContext2D) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.ctx = ctx;
+    this.barColors = ['#ff5733', '#33ff57', '#5733ff']; // Colores de las barras
+    this.barHeights = [50, 80, 120]; // Alturas iniciales de las barras
+  }
+
+  public updateBarHeights() {
+    // Actualiza las alturas de las barras de manera dinámica (puedes personalizar la lógica según tus necesidades)
+    for (let i = 0; i < this.barHeights.length; i++) {
+      this.barHeights[i] = Math.random() * this.height;
+    }
+  }
+
+  public draw() {
+    // Dibuja las barras
+    const barWidth = this.width / this.barColors.length;
+
+    for (let i = 0; i < this.barColors.length; i++) {
+      this.ctx.fillStyle = this.barColors[i];
+      this.ctx.fillRect(this.x + i * barWidth, this.y + this.height - this.barHeights[i], barWidth, this.barHeights[i]);
+    }
+  }
+}

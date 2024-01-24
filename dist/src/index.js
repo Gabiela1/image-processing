@@ -4,7 +4,7 @@ import { MathImg } from "./MathImg.js";
 import { Particle } from "./particle.js";
 import { ParticleText } from "./particle.js";
 import { CanvasLocal } from './canvasLocal.js';
-import { DynamicLines, ColorExplosions, ProgressBar } from "./proyectofinal.js";
+import { DynamicLines, ColorExplosions, ProgressBar, DynamicBarChart } from "./proyectofinal.js";
 var lienzo1;
 var lienzo2;
 var lienzo4;
@@ -432,6 +432,8 @@ function initProgressBar() {
     progressBar = new ProgressBar(barX, barY, barWidth, barHeight, ctx);
 }
 function animateProgressBar() {
+    // Dibuja la imagen original en el fondo
+    ctx.drawImage(imgLocal.getImage(), 0, 0, pantalla2.canvas.width, pantalla2.canvas.height);
     // Incrementa el progreso gradualmente
     progressBar.update(progressBar.progress + 0.01);
     // Dibuja la barra de carga
@@ -444,6 +446,27 @@ function animateProgressBar() {
 function progreso() {
     initProgressBar();
     animateProgressBar();
+}
+//seccion de grafico de barras 
+var dynamicBarChart;
+function initDynamicBarChart() {
+    var chartX = 50;
+    var chartY = 50;
+    var chartWidth = 300;
+    var chartHeight = 150;
+    dynamicBarChart = new DynamicBarChart(chartX, chartY, chartWidth, chartHeight, ctx);
+}
+function animateDynamicBarChart() {
+    pantalla2.clearRect(0, 0, pantalla2.canvas.width, pantalla2.canvas.height);
+    pantalla2.drawImage(imgLocal.getImage(), 0, 0, pantalla2.canvas.width, pantalla2.canvas.height);
+    dynamicBarChart.draw();
+    // Actualiza las alturas de las barras
+    dynamicBarChart.updateBarHeights();
+    requestAnimationFrame(animateDynamicBarChart);
+}
+function startDynamicBarChartAnimation() {
+    initDynamicBarChart();
+    animateDynamicBarChart();
 }
 lienzo1.addEventListener('mousemove', handleMouse);
 lienzo1.addEventListener("mousemove", imgLocal.drawSmallImg);
@@ -514,3 +537,4 @@ document.getElementById("op-afin").addEventListener('click', tAfin, false);
 document.getElementById("startDinamicEffect").addEventListener('click', startDynamicLines, false);
 document.getElementById("startColorExplosion").addEventListener('click', startColorExplosions, false);
 document.getElementById("progreso").addEventListener('click', progreso, false);
+document.getElementById("startDynamicBarChartAnimation").addEventListener('click', startDynamicBarChartAnimation, false);
