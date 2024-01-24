@@ -4,7 +4,7 @@ import { MathImg } from "./MathImg.js";
 import { Particle } from "./particle.js";
 import { ParticleText } from "./particle.js";
 import { CanvasLocal } from './canvasLocal.js';
-import { DynamicLines, ColorExplosions } from "./proyectofinal.js";
+import { DynamicLines, ColorExplosions, ProgressBar } from "./proyectofinal.js";
 var lienzo1;
 var lienzo2;
 var lienzo4;
@@ -422,6 +422,29 @@ function startColorExplosions() {
     initColorExplosions();
     animateColorExplosions();
 }
+// seccion efecto de barra de navegacion 
+var progressBar;
+function initProgressBar() {
+    var barWidth = 300;
+    var barHeight = 20;
+    var barX = (pantalla2.canvas.width - barWidth) / 2;
+    var barY = (pantalla2.canvas.height - barHeight) / 2;
+    progressBar = new ProgressBar(barX, barY, barWidth, barHeight, ctx);
+}
+function animateProgressBar() {
+    // Incrementa el progreso gradualmente
+    progressBar.update(progressBar.progress + 0.01);
+    // Dibuja la barra de carga
+    progressBar.draw();
+    // Si no ha alcanzado el 100%, sigue animando
+    if (progressBar.progress < 1) {
+        requestAnimationFrame(animateProgressBar);
+    }
+}
+function progreso() {
+    initProgressBar();
+    animateProgressBar();
+}
 lienzo1.addEventListener('mousemove', handleMouse);
 lienzo1.addEventListener("mousemove", imgLocal.drawSmallImg);
 document.getElementById('files').addEventListener('change', imgLocal.handleFileSelect, false);
@@ -490,3 +513,4 @@ document.getElementById("op-afin").addEventListener('click', tAfin, false);
 //operaciones proyecto 
 document.getElementById("startDinamicEffect").addEventListener('click', startDynamicLines, false);
 document.getElementById("startColorExplosion").addEventListener('click', startColorExplosions, false);
+document.getElementById("progreso").addEventListener('click', progreso, false);

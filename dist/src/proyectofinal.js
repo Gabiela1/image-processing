@@ -112,3 +112,32 @@ var ColorExplosions = /** @class */ (function () {
     return ColorExplosions;
 }());
 export { ColorExplosions };
+var ProgressBar = /** @class */ (function () {
+    function ProgressBar(x, y, width, height, ctx) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.ctx = ctx;
+        this.progress = 0; // Inicializa el progreso en 0
+    }
+    ProgressBar.prototype.update = function (progress) {
+        this.progress = progress;
+    };
+    ProgressBar.prototype.draw = function () {
+        this.ctx.clearRect(this.x, this.y, this.width, this.height);
+        // Dibuja la barra de carga completa
+        this.ctx.fillStyle = 'lightgray';
+        this.ctx.fillRect(this.x, this.y, this.width, this.height);
+        // Dibuja la porción de la barra de carga según el progreso
+        this.ctx.fillStyle = 'blue';
+        var progressWidth = this.width * this.progress;
+        this.ctx.fillRect(this.x, this.y, progressWidth, this.height);
+        // Agrega el mensaje de carga
+        this.ctx.fillStyle = 'black';
+        this.ctx.font = '16px Arial';
+        this.ctx.fillText('Loading...', this.x + this.width / 2 - 40, this.y + this.height / 2 + 6);
+    };
+    return ProgressBar;
+}());
+export { ProgressBar };
