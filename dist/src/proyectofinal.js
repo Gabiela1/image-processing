@@ -185,20 +185,42 @@ var ColorCurtainEffect = /** @class */ (function () {
         }
     };
     ColorCurtainEffect.prototype.draw = function (img) {
-        // Dibuja la imagen original
         this.ctx.drawImage(img, 0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-        // Dibuja la cortina de color sobre la imagen
         this.ctx.fillStyle = "rgba(".concat(this.getRandomColorComponent(), ", ").concat(this.getRandomColorComponent(), ", ").concat(this.getRandomColorComponent(), ", 0.5)");
         this.ctx.fillRect(0, 0, this.curtainWidth, this.ctx.canvas.height);
     };
     ColorCurtainEffect.prototype.randomizeCurtainColor = function () {
-        // Cambia el color de la cortina a uno aleatorio
         this.ctx.fillStyle = "rgba(".concat(this.getRandomColorComponent(), ", ").concat(this.getRandomColorComponent(), ", ").concat(this.getRandomColorComponent(), ", 0.5)");
     };
     ColorCurtainEffect.prototype.getRandomColorComponent = function () {
-        // Genera un componente de color aleatorio (0-255)
         return Math.floor(Math.random() * 256);
     };
     return ColorCurtainEffect;
 }());
 export { ColorCurtainEffect };
+//Estiramiento 
+var StretchEffect = /** @class */ (function () {
+    function StretchEffect(ctx, width, height, scale, direction) {
+        this.ctx = ctx;
+        this.width = width;
+        this.height = height;
+        this.scale = scale;
+        this.direction = direction;
+    }
+    StretchEffect.prototype.update = function () {
+        this.scale += this.direction;
+        if (this.scale <= 1 || this.scale >= 2) {
+            this.direction *= -1;
+        }
+    };
+    StretchEffect.prototype.draw = function (originalImage) {
+        this.ctx.globalAlpha = 1;
+        this.ctx.drawImage(originalImage, 0, 0, this.width, this.height);
+        this.ctx.scale(this.scale, 1);
+        this.ctx.drawImage(originalImage, 0, 0, this.width, this.height);
+        this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+        this.ctx.globalAlpha = 1;
+    };
+    return StretchEffect;
+}());
+export { StretchEffect };

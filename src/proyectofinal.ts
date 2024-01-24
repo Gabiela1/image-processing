@@ -237,21 +237,67 @@ export class ColorCurtainEffect {
   }
 
   public draw(img: HTMLImageElement) {
-    // Dibuja la imagen original
+  
     this.ctx.drawImage(img, 0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
-    // Dibuja la cortina de color sobre la imagen
     this.ctx.fillStyle = `rgba(${this.getRandomColorComponent()}, ${this.getRandomColorComponent()}, ${this.getRandomColorComponent()}, 0.5)`;
     this.ctx.fillRect(0, 0, this.curtainWidth, this.ctx.canvas.height);
   }
 
   private randomizeCurtainColor() {
-    // Cambia el color de la cortina a uno aleatorio
+   
     this.ctx.fillStyle = `rgba(${this.getRandomColorComponent()}, ${this.getRandomColorComponent()}, ${this.getRandomColorComponent()}, 0.5)`;
   }
 
   private getRandomColorComponent() {
-    // Genera un componente de color aleatorio (0-255)
+    
     return Math.floor(Math.random() * 256);
+  }
+}
+
+//Estiramiento 
+
+export class StretchEffect {
+  protected ctx: CanvasRenderingContext2D;
+  protected width: number;
+  protected height: number;
+  protected scale: number;
+  protected direction: number;
+
+  constructor(ctx: CanvasRenderingContext2D, width: number, height: number, scale: number, direction: number) {
+    this.ctx = ctx;
+    this.width = width;
+    this.height = height;
+    this.scale = scale;
+    this.direction = direction;
+  }
+
+  public update() {
+  
+    this.scale += this.direction;
+
+    if (this.scale <= 1 || this.scale >= 2) {
+      this.direction *= -1;
+    }
+  }
+
+  public draw(originalImage: HTMLImageElement) {
+  
+    this.ctx.globalAlpha = 1;
+
+  
+    this.ctx.drawImage(originalImage, 0, 0, this.width, this.height);
+
+
+    this.ctx.scale(this.scale, 1);
+
+
+    this.ctx.drawImage(originalImage, 0, 0, this.width, this.height);
+
+
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+  
+    this.ctx.globalAlpha = 1;
   }
 }
