@@ -168,3 +168,37 @@ var DynamicBarChart = /** @class */ (function () {
     return DynamicBarChart;
 }());
 export { DynamicBarChart };
+var ColorCurtainEffect = /** @class */ (function () {
+    function ColorCurtainEffect(ctx, curtainWidth, speed) {
+        this.ctx = ctx;
+        this.curtainWidth = curtainWidth;
+        this.speed = speed;
+    }
+    ColorCurtainEffect.prototype.update = function () {
+        // Mueve la cortina hacia la derecha
+        this.curtainWidth += this.speed;
+        // Si la cortina alcanza el ancho del lienzo, reinicia su posición
+        if (this.curtainWidth >= this.ctx.canvas.width) {
+            this.curtainWidth = 0;
+            // Cambia el color de la cortina a uno aleatorio
+            this.randomizeCurtainColor();
+        }
+    };
+    ColorCurtainEffect.prototype.draw = function (img) {
+        // Dibuja la imagen original
+        this.ctx.drawImage(img, 0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+        // Dibuja la cortina de color sobre la imagen
+        this.ctx.fillStyle = "rgba(".concat(this.getRandomColorComponent(), ", ").concat(this.getRandomColorComponent(), ", ").concat(this.getRandomColorComponent(), ", 0.5)");
+        this.ctx.fillRect(0, 0, this.curtainWidth, this.ctx.canvas.height);
+    };
+    ColorCurtainEffect.prototype.randomizeCurtainColor = function () {
+        // Cambia el color de la cortina a uno aleatorio
+        this.ctx.fillStyle = "rgba(".concat(this.getRandomColorComponent(), ", ").concat(this.getRandomColorComponent(), ", ").concat(this.getRandomColorComponent(), ", 0.5)");
+    };
+    ColorCurtainEffect.prototype.getRandomColorComponent = function () {
+        // Genera un componente de color aleatorio (0-255)
+        return Math.floor(Math.random() * 256);
+    };
+    return ColorCurtainEffect;
+}());
+export { ColorCurtainEffect };

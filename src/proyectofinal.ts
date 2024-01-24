@@ -210,3 +210,48 @@ export class DynamicBarChart {
     }
   }
 }
+
+
+export class ColorCurtainEffect {
+  protected ctx: CanvasRenderingContext2D;
+  protected curtainWidth: number;
+  protected speed: number;
+
+  constructor(ctx: CanvasRenderingContext2D, curtainWidth: number, speed: number) {
+    this.ctx = ctx;
+    this.curtainWidth = curtainWidth;
+    this.speed = speed;
+  }
+
+  public update() {
+    // Mueve la cortina hacia la derecha
+    this.curtainWidth += this.speed;
+
+    // Si la cortina alcanza el ancho del lienzo, reinicia su posición
+    if (this.curtainWidth >= this.ctx.canvas.width) {
+      this.curtainWidth = 0;
+
+      // Cambia el color de la cortina a uno aleatorio
+      this.randomizeCurtainColor();
+    }
+  }
+
+  public draw(img: HTMLImageElement) {
+    // Dibuja la imagen original
+    this.ctx.drawImage(img, 0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+
+    // Dibuja la cortina de color sobre la imagen
+    this.ctx.fillStyle = `rgba(${this.getRandomColorComponent()}, ${this.getRandomColorComponent()}, ${this.getRandomColorComponent()}, 0.5)`;
+    this.ctx.fillRect(0, 0, this.curtainWidth, this.ctx.canvas.height);
+  }
+
+  private randomizeCurtainColor() {
+    // Cambia el color de la cortina a uno aleatorio
+    this.ctx.fillStyle = `rgba(${this.getRandomColorComponent()}, ${this.getRandomColorComponent()}, ${this.getRandomColorComponent()}, 0.5)`;
+  }
+
+  private getRandomColorComponent() {
+    // Genera un componente de color aleatorio (0-255)
+    return Math.floor(Math.random() * 256);
+  }
+}

@@ -5,7 +5,7 @@ import { MathImg } from "./MathImg.js";
 import { Particle } from "./particle.js";
 import { ParticleText } from "./particle.js";
 import { CanvasLocal } from './canvasLocal.js';
-import { DynamicLines, ColorExplosions, ProgressBar, DynamicBarChart} from "./proyectofinal.js";
+import { DynamicLines, ColorExplosions, ProgressBar, DynamicBarChart, ColorCurtainEffect} from "./proyectofinal.js";
 
 let lienzo1: HTMLCanvasElement;
 let lienzo2: HTMLCanvasElement;
@@ -540,6 +540,31 @@ function startDynamicBarChartAnimation() {
   initDynamicBarChart();
   animateDynamicBarChart();
 }
+
+
+//cortina de color 
+
+
+let colorCurtainEffect: ColorCurtainEffect;
+
+function initColorCurtainEffect() {
+  colorCurtainEffect = new ColorCurtainEffect(ctx, 0, 2); // Puedes ajustar la velocidad
+}
+
+function animateColorCurtainEffect() {
+  const img = imgLocal.getImage();
+  colorCurtainEffect.update();
+  colorCurtainEffect.draw(img);
+
+  requestAnimationFrame(animateColorCurtainEffect);
+}
+
+function startColorCurtainEffect() {
+  initColorCurtainEffect();
+  animateColorCurtainEffect();
+}
+
+
 lienzo1.addEventListener('mousemove', handleMouse);
  
 lienzo1.addEventListener("mousemove", imgLocal.drawSmallImg);
@@ -624,3 +649,4 @@ document.getElementById("startDinamicEffect").addEventListener('click', startDyn
 document.getElementById("startColorExplosion").addEventListener('click', startColorExplosions , false);
 document.getElementById("progreso").addEventListener('click', progreso , false);
 document.getElementById("startDynamicBarChartAnimation").addEventListener('click', startDynamicBarChartAnimation, false);
+document.getElementById("startColorCurtainEffect").addEventListener('click', startColorCurtainEffect, false);
