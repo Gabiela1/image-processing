@@ -58,3 +58,57 @@ var DynamicLines = /** @class */ (function () {
     return DynamicLines;
 }());
 export { DynamicLines };
+var ColorExplosions = /** @class */ (function () {
+    function ColorExplosions(ctx) {
+        this.ctx = ctx;
+        this.explosions = [];
+    }
+    ColorExplosions.prototype.generateExplosion = function () {
+        var explosion = {
+            x: Math.random() * this.ctx.canvas.width,
+            y: Math.random() * this.ctx.canvas.height,
+            radius: Math.random() * 30 + 10,
+            color: this.getRandomColor(),
+        };
+        this.explosions.push(explosion);
+        // Mantener un número limitado de explosiones
+        if (this.explosions.length > 5) {
+            this.explosions.shift(); // Eliminar la explosión más antigua
+        }
+    };
+    ColorExplosions.prototype.drawExplosions = function () {
+        for (var _i = 0, _a = this.explosions; _i < _a.length; _i++) {
+            var explosion = _a[_i];
+            this.ctx.beginPath();
+            this.ctx.arc(explosion.x, explosion.y, explosion.radius, 0, Math.PI * 2);
+            this.ctx.fillStyle = explosion.color;
+            this.ctx.fill();
+            this.ctx.closePath();
+        }
+    };
+    ColorExplosions.prototype.animateExplosions = function () {
+        var _loop_1 = function (explosion) {
+            explosion.radius += 1;
+            // Eliminar explosiones cuando alcanzan un tamaño máximo
+            if (explosion.radius > 50) {
+                this_1.explosions = this_1.explosions.filter(function (exp) { return exp !== explosion; });
+            }
+        };
+        var this_1 = this;
+        // Hacer que las explosiones se expandan con el tiempo
+        for (var _i = 0, _a = this.explosions; _i < _a.length; _i++) {
+            var explosion = _a[_i];
+            _loop_1(explosion);
+        }
+    };
+    ColorExplosions.prototype.getRandomColor = function () {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    };
+    return ColorExplosions;
+}());
+export { ColorExplosions };

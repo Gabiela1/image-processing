@@ -73,3 +73,61 @@ export class DynamicLines {
     return Math.sqrt(dx * dx + dy * dy);
   }
 }
+
+
+export class ColorExplosions {
+  protected ctx: CanvasRenderingContext2D;
+  protected explosions: { x: number; y: number; radius: number; color: string }[];
+
+  constructor(ctx: CanvasRenderingContext2D) {
+    this.ctx = ctx;
+    this.explosions = [];
+  }
+
+  public generateExplosion() {
+    const explosion = {
+      x: Math.random() * this.ctx.canvas.width,
+      y: Math.random() * this.ctx.canvas.height,
+      radius: Math.random() * 30 + 10,
+      color: this.getRandomColor(),
+    };
+
+    this.explosions.push(explosion);
+
+    // Mantener un número limitado de explosiones
+    if (this.explosions.length > 5) {
+      this.explosions.shift(); // Eliminar la explosión más antigua
+    }
+  }
+
+  public drawExplosions() {
+    for (const explosion of this.explosions) {
+      this.ctx.beginPath();
+      this.ctx.arc(explosion.x, explosion.y, explosion.radius, 0, Math.PI * 2);
+      this.ctx.fillStyle = explosion.color;
+      this.ctx.fill();
+      this.ctx.closePath();
+    }
+  }
+
+  public animateExplosions() {
+    // Hacer que las explosiones se expandan con el tiempo
+    for (const explosion of this.explosions) {
+      explosion.radius += 1;
+
+      // Eliminar explosiones cuando alcanzan un tamaño máximo
+      if (explosion.radius > 50) {
+        this.explosions = this.explosions.filter((exp) => exp !== explosion);
+      }
+    }
+  }
+
+  protected getRandomColor(): string {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+}

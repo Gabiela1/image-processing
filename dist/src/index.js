@@ -4,7 +4,7 @@ import { MathImg } from "./MathImg.js";
 import { Particle } from "./particle.js";
 import { ParticleText } from "./particle.js";
 import { CanvasLocal } from './canvasLocal.js';
-import { DynamicLines } from "./proyectofinal.js";
+import { DynamicLines, ColorExplosions } from "./proyectofinal.js";
 var lienzo1;
 var lienzo2;
 var lienzo4;
@@ -405,6 +405,23 @@ function startDynamicLines() {
     initDynamicLines();
     animateDynamicLines();
 }
+//////////// seccion de efecto de explosion 
+var colorExplosions;
+function initColorExplosions() {
+    colorExplosions = new ColorExplosions(ctx);
+}
+function animateColorExplosions() {
+    ctx.clearRect(0, 0, pantalla2.canvas.width, pantalla2.canvas.height);
+    ctx.drawImage(imgLocal.getImage(), 0, 0, pantalla2.canvas.width, pantalla2.canvas.height);
+    colorExplosions.generateExplosion();
+    colorExplosions.animateExplosions();
+    colorExplosions.drawExplosions();
+    requestAnimationFrame(animateColorExplosions);
+}
+function startColorExplosions() {
+    initColorExplosions();
+    animateColorExplosions();
+}
 lienzo1.addEventListener('mousemove', handleMouse);
 lienzo1.addEventListener("mousemove", imgLocal.drawSmallImg);
 document.getElementById('files').addEventListener('change', imgLocal.handleFileSelect, false);
@@ -471,4 +488,5 @@ document.getElementById("op-shearingX").addEventListener('click', shearingX, fal
 document.getElementById("op-shearingY").addEventListener('click', shearingY, false);
 document.getElementById("op-afin").addEventListener('click', tAfin, false);
 //operaciones proyecto 
-document.getElementById("startDominoEffect").addEventListener('click', startDynamicLines, false);
+document.getElementById("startDinamicEffect").addEventListener('click', startDynamicLines, false);
+document.getElementById("startColorExplosion").addEventListener('click', startColorExplosions, false);
